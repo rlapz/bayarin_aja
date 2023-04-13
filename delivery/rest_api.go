@@ -83,7 +83,7 @@ func (self *RestApi) waitSignal() {
 		log.Fatalln("http.Shutdown:", err.Error())
 	}
 
-	<-moeChan
+	<-ctx.Done()
 
-	log.Println("The RESt API has been closd gracefully")
+	log.Println("The RESt API has been closed gracefully")
 }
