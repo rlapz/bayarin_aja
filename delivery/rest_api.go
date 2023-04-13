@@ -12,6 +12,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rlapz/bayarin_aja/config"
+	"github.com/rlapz/bayarin_aja/controller"
+	"github.com/rlapz/bayarin_aja/repo/json_repo"
+	"github.com/rlapz/bayarin_aja/usecase"
 )
 
 type RestApi struct {
@@ -59,6 +62,15 @@ func (self *RestApi) Run() error {
 // routes
 // version: 1
 func (self *RestApi) v1() {
+	rg := self.engine.Group("/v1")
+
+	json_db_path := "database/json"
+	customerRepo := json_repo.NewJSONCustomerRepo(json_db_path)
+	tokenRepo := json_repo.NewJSONTokenRepo(json_db_path)
+
+	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenRepo)
+
+	controller.NewCustomerController(rg, customerUsecase, &self.config.Secret)
 }
 
 // helper
