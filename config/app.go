@@ -19,8 +19,9 @@ type Secret struct {
 }
 
 type App struct {
-	Api    Api
-	Secret Secret
+	Api        Api
+	Secret     Secret
+	DbJSONPath string
 }
 
 func NewAppConfig() *App {
@@ -44,6 +45,7 @@ func NewAppConfig() *App {
 			Key:       []byte(utils.GetEnvFrom("SECRET_KEY")),
 			ExpiresIn: time.Duration(exp),
 		},
+		DbJSONPath: utils.GetEnvFrom("DB_JSON_PATH"),
 	}
 
 	return &ret
