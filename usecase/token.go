@@ -9,7 +9,7 @@ type token struct {
 	repoToken repo.TokenRepo
 }
 
-func NewRepoUsecase(t repo.TokenRepo) TokenUsecase {
+func NewTokenUsecase(t repo.TokenRepo) TokenUsecase {
 	return &token{
 		t,
 	}
