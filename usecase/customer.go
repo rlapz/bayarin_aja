@@ -17,7 +17,8 @@ func NewCustomerUsecase(c repo.CustomerRepo, t repo.TokenRepo) CustomerUsecase {
 }
 
 func (self *customer) Login(usename, password string) (int64, error) {
-	return 0, nil
+	res, err := self.repoCustomer.SelectByUsernme(usename)
+	return res.Id, err
 }
 
 func (self *customer) Logout(id int64, tokenId int64) error {
