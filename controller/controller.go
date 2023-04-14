@@ -9,7 +9,10 @@ import (
 	"github.com/rlapz/bayarin_aja/my_errors"
 )
 
-type TokenMetadata map[string]int64
+type TokenMetadata struct {
+	CustomerId int64
+	TokenId    int64
+}
 
 func GetHTTPStatusFrom(err error) int {
 	if errors.Is(err, my_errors.ErrInternal) {
@@ -43,18 +46,16 @@ func NewFailedResponse(ctx *gin.Context, err error, message ...string) {
 func GetTokenMetadata(ctx *gin.Context) (TokenMetadata, error) {
 	custId, ok := ctx.Get("customer_id")
 	if !ok {
-		return nil, errors.New("customer_id cannot be found")
+		return TokenMetadata{}, errors.New("customer_id cannot be found")
 	}
 
 	tokId, ok := ctx.Get("token_id")
 	if !ok {
-		return nil, errors.New("token_id cannot be found")
+		return TokenMetadata{}, errors.New("token_id cannot be found")
 	}
 
-	ret := make(TokenMetadata, 2)
-
-	// TODO: validate the type
-	ret["customer_id"] = custId.(int64)
-	ret["token_id"] = tokId.(int64)
-	return ret, nil
+	return TokenMetadata{
+		CustomerId: custId.(int64),
+		TokenId:    tokId.(int64),
+	}, nil
 }
