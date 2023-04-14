@@ -3,15 +3,16 @@ package json_repo
 import (
 	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/repo"
+	"github.com/rlapz/bayarin_aja/repo/json_repo/numb_db"
 )
 
 type token struct {
-	path string
+	db *numb_db.NumbDB
 }
 
-func NewJSONTokenRepo(path string) repo.TokenRepo {
+func NewJSONTokenRepo(db *numb_db.NumbDB) repo.TokenRepo {
 	return &token{
-		path,
+		db,
 	}
 }
 

@@ -3,15 +3,16 @@ package json_repo
 import (
 	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/repo"
+	"github.com/rlapz/bayarin_aja/repo/json_repo/numb_db"
 )
 
 type customer struct {
-	path string
+	db *numb_db.NumbDB
 }
 
-func NewJSONCustomerRepo(path string) repo.CustomerRepo {
+func NewJSONCustomerRepo(db *numb_db.NumbDB) repo.CustomerRepo {
 	return &customer{
-		path,
+		db,
 	}
 }
 

@@ -15,6 +15,7 @@ import (
 	"github.com/rlapz/bayarin_aja/controller"
 	"github.com/rlapz/bayarin_aja/middleware"
 	"github.com/rlapz/bayarin_aja/repo/json_repo"
+	"github.com/rlapz/bayarin_aja/repo/json_repo/numb_db"
 	"github.com/rlapz/bayarin_aja/usecase"
 )
 
@@ -65,11 +66,11 @@ func (self *RestApi) Run() error {
 func (self *RestApi) v1() {
 	rg := self.engine.Group("/v1")
 
-	json_db_path := self.config.DbJSONPath
+	json_db := numb_db.NewNumDB(self.config.DbJSONPath)
 
-	customerRepo := json_repo.NewJSONCustomerRepo(json_db_path)
-	tokenRepo := json_repo.NewJSONTokenRepo(json_db_path)
-	paymentRepo := json_repo.NewJSONPaymentRepo(json_db_path)
+	customerRepo := json_repo.NewJSONCustomerRepo(json_db)
+	tokenRepo := json_repo.NewJSONTokenRepo(json_db)
+	paymentRepo := json_repo.NewJSONPaymentRepo(json_db)
 
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
 	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
