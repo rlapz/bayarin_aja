@@ -19,7 +19,8 @@ func (self *customer) SelectById(id int64) (*model.Customer, error) {
 	return &model.Customer{}, nil
 }
 
-func (self *customer) SelectByUsername(username string) (*model.Customer, error) {
+func (self *customer) SelectByUsernameAndPassword(username,
+	password string) (*model.Customer, error) {
 	return &model.Customer{}, nil
 }
 

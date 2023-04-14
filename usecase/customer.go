@@ -20,8 +20,10 @@ func NewCustomerUsecase(c repo.CustomerRepo, t TokenUsecase) CustomerUsecase {
 }
 
 func (self *customer) Login(cust *model.Customer, secret *config.Secret) (utils.Token, error) {
-	//TODO: verify username and password
-	res, err := self.repoCustomer.SelectByUsername(cust.Username)
+	res, err := self.repoCustomer.SelectByUsernameAndPassword(
+		cust.Username,
+		cust.Password,
+	)
 	if err != nil {
 		return utils.Token{}, err
 	}

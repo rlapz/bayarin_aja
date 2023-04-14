@@ -6,7 +6,7 @@ import (
 
 type CustomerRepo interface {
 	SelectById(id int64) (*model.Customer, error)
-	SelectByUsername(username string) (*model.Customer, error)
+	SelectByUsernameAndPassword(username, password string) (*model.Customer, error)
 	SelectActivities(customerId int64) ([]model.CustomerActivity, error)
 	InsertOneActivity(act *model.CustomerActivity) error
 }
