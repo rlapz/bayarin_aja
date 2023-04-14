@@ -26,7 +26,7 @@ func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase,
 
 	r.POST("/login", cc.login)
 	r.POST("/logout", mid, cc.logout)
-	r.GET("/activity/customer", mid, cc.getActivity)
+	r.GET("/activity/customer", mid, cc.getActivities)
 }
 
 // handlers
@@ -77,17 +77,25 @@ func (self *customerController) logout(ctx *gin.Context) {
 	NewSuccessResponse(ctx, http.StatusOK, "logged out", nil)
 }
 
-func (self *customerController) getActivity(ctx *gin.Context) {
+func (self *customerController) getActivities(ctx *gin.Context) {
 	meta, err := GetTokenMetadata(ctx)
 	if err != nil {
 		NewFailedResponse(ctx, err)
 		return
 	}
 
-	data, err := self.customerUsecase.GetActivities(meta.CustomerId)
+	res, err := self.customerUsecase.GetActivities(meta.CustomerId)
 	if err != nil {
 		NewFailedResponse(ctx, err)
 		return
+	}
+
+	data := make([]model.ApiCustomerActivityResponse, len(res))
+	for i := 0; i < len(res); i++ {
+		data[i].Id = res[i].Id
+		data[i].CustomerId = res[i].CustomerId
+		data[i].Description = res[i].Description
+		data[i].CreatedAt = res[i].CreatedAt
 	}
 
 	NewSuccessResponse(ctx, http.StatusOK, "", data)
