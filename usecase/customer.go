@@ -19,7 +19,7 @@ func NewCustomerUsecase(c repo.CustomerRepo, t repo.TokenRepo) CustomerUsecase {
 
 func (self *customer) Login(usename, password string) (int64, error) {
 	//TODO: verify username and password
-	res, err := self.repoCustomer.SelectByUsernme(usename)
+	res, err := self.repoCustomer.SelectByUsername(usename)
 	if err != nil {
 		return -1, err
 	}
