@@ -7,24 +7,34 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
+type Token struct {
+	TokenString string
+	ExpiresIn   time.Duration
+}
+
 // id    : customer id
 // secret: server secret
 // exp   : expiration time
 //
-// return: generated token if success
-func TokenGenerate(secret []byte, id int64, exp time.Duration) (string, error) {
-	tok := jwt.NewWithClaims(jwt.SigningMethodHS256, newClaims(id, exp))
+// return: generated token and expires_in if success
+func TokenGenerate(secret []byte, id int64, exp time.Duration) (Token, error) {
+	claims := newClaims(id, exp)
+	tok := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signed, err := tok.SignedString(secret)
 	if err != nil {
-		return "", err
+		return Token{}, err
 	}
 
-	return signed, nil
+	return Token{
+		TokenString: signed,
+		ExpiresIn:   time.Duration(claims["exp"].(int64)),
+	}, nil
 }
 
 func newClaims(id int64, exp time.Duration) jwt.MapClaims {
 	return jwt.MapClaims{
-		"id": id,
+		"id":  id,
+		"exp": time.Now().Add(exp * time.Second).Unix(),
 	}
 }
 

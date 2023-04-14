@@ -19,34 +19,34 @@ func NewCustomerUsecase(c repo.CustomerRepo, t TokenUsecase) CustomerUsecase {
 	}
 }
 
-func (self *customer) Login(cust *model.Customer, secret *config.Secret) (string, error) {
+func (self *customer) Login(cust *model.Customer, secret *config.Secret) (utils.Token, error) {
 	//TODO: verify username and password
 	res, err := self.repoCustomer.SelectByUsername(cust.Username)
 	if err != nil {
-		return "", err
+		return utils.Token{}, err
 	}
 
-	token, err := utils.TokenGenerate(secret.Key, res.Id, secret.ExpiresIn)
+	ret, err := utils.TokenGenerate(secret.Key, res.Id, secret.ExpiresIn)
 	if err != nil {
-		return "", err
+		return ret, err
 	}
 
 	tok := model.Token{
 		CustomerId:  res.Id,
-		TokenString: token,
+		TokenString: ret.TokenString,
 	}
 
 	err = self.usecaseToken.AddOne(&tok)
 	if err != nil {
-		return "", err
+		return ret, err
 	}
 
 	err = self.addActivity(res.Id, "login")
 	if err != nil {
-		return "", err
+		return ret, err
 	}
 
-	return token, err
+	return ret, err
 }
 
 func (self *customer) Logout(id int64, tokenId int64) error {

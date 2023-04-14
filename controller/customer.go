@@ -47,9 +47,8 @@ func (self *customerController) login(ctx *gin.Context) {
 		http.StatusOK,
 		"login success",
 		model.ApiCustomerLoginResponse{
-			Token: tok,
-			// TODO
-			ExpiresIn: self.secret.ExpiresIn,
+			Token:     tok.TokenString,
+			ExpiresIn: tok.ExpiresIn,
 		},
 	)
 }
