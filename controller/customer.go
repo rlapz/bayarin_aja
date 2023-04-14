@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rlapz/bayarin_aja/config"
-	"github.com/rlapz/bayarin_aja/middleware"
 	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/usecase"
 	"github.com/rlapz/bayarin_aja/utils"
@@ -13,17 +12,13 @@ import (
 
 type customerController struct {
 	customerUsecase usecase.CustomerUsecase
-	tokenUsecase    usecase.TokenUsecase
 	secret          *config.Secret
 }
 
 func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase,
-	t usecase.TokenUsecase, s *config.Secret) {
+	mid gin.HandlerFunc, s *config.Secret) {
 
-	var validator = middleware.NewTokenValidator(t)
-	var mid = validator.TokenValidate(s.Key)
-	var cc = customerController{c, t, s}
-
+	var cc = customerController{c, s}
 	r.POST("/customer/login", cc.login)
 	r.POST("/customer/logout", mid, cc.logout)
 	r.GET("/customer/activity", mid, cc.getActivities)

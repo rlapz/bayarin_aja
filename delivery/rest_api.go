@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rlapz/bayarin_aja/config"
 	"github.com/rlapz/bayarin_aja/controller"
+	"github.com/rlapz/bayarin_aja/middleware"
 	"github.com/rlapz/bayarin_aja/repo/json_repo"
 	"github.com/rlapz/bayarin_aja/usecase"
 )
@@ -65,6 +66,7 @@ func (self *RestApi) v1() {
 	rg := self.engine.Group("/v1")
 
 	json_db_path := self.config.DbJSONPath
+
 	customerRepo := json_repo.NewJSONCustomerRepo(json_db_path)
 	tokenRepo := json_repo.NewJSONTokenRepo(json_db_path)
 	paymentRepo := json_repo.NewJSONPaymentRepo(json_db_path)
@@ -73,17 +75,20 @@ func (self *RestApi) v1() {
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
 	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
 
+	midTokenValidator := middleware.NewTokenValidator(tokenUsecase)
+	midFunc := midTokenValidator.TokenValidate(self.config.Secret.Key)
+
 	controller.NewCustomerController(
 		rg,
 		customerUsecase,
-		tokenUsecase,
+		midFunc,
 		&self.config.Secret,
 	)
 
 	controller.NewPaymentController(
 		rg,
 		paymentUsecase,
-		tokenUsecase,
+		midFunc,
 		&self.config.Secret,
 	)
 }
