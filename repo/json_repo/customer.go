@@ -15,10 +15,18 @@ func NewJSONCustomerRepo(path string) repo.CustomerRepo {
 	}
 }
 
+func (self *customer) SelectById(id int64) (*model.Customer, error) {
+	return &model.Customer{}, nil
+}
+
 func (self *customer) SelectByUsernme(username string) (*model.Customer, error) {
 	return &model.Customer{}, nil
 }
 
 func (self *customer) SelectActivities(customerId int64) ([]model.CustomerActivity, error) {
 	return []model.CustomerActivity{}, nil
+}
+
+func (self *customer) InsertOneActivity(act *model.CustomerActivity) error {
+	return nil
 }

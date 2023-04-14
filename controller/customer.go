@@ -68,7 +68,7 @@ func (self *customerController) logout(ctx *gin.Context) {
 		return
 	}
 
-	err = self.tokenUsecase.RemoveOne(meta.TokenId)
+	err = self.customerUsecase.Logout(meta.CustomerId, meta.TokenId)
 	if err != nil {
 		NewFailedResponse(ctx, err)
 		return

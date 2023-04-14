@@ -5,8 +5,10 @@ import (
 )
 
 type CustomerRepo interface {
+	SelectById(id int64) (*model.Customer, error)
 	SelectByUsernme(username string) (*model.Customer, error)
 	SelectActivities(customerId int64) ([]model.CustomerActivity, error)
+	InsertOneActivity(act *model.CustomerActivity) error
 }
 
 type TokenRepo interface {
