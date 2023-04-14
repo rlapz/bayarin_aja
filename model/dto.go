@@ -11,8 +11,7 @@ type ApiCustomerLoginRequest struct {
 }
 
 type ApiCustomerActivityRequest struct {
-	CustomerId  int64  `json:"customer_id,required"`
-	Description string `json:"description"`
+	CustomerId int64 `json:"customer_id,required"`
 }
 
 type ApiPaymentCreateRequest struct {
@@ -50,32 +49,32 @@ type ApiCustomerResponse struct {
 }
 
 type ApiCustomerActivityResponse struct {
-	Id          int64               `json:"id"`
-	Customer    ApiCustomerResponse `json:"customer"`
-	Description string              `json:"description"`
-	CreatedAt   time.Time           `json:"created_at"`
+	Id          int64     `json:"id"`
+	CustomerId  int64     `json:"customer_id"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
 }
 
 type ApiPaymentCreateResponse struct {
-	Id               int64               `json:"id"`
-	Customer         ApiCustomerResponse `json:"customer"`
-	TargetId         int64               `json:"target_id"`
-	Items            []Item              `json:"items"`
-	Amount           int                 `json:"amount"`
-	OrderNumber      string              `json:"order_number"`
-	OrderDescription string              `json:"order_description"`
-	CreatedAt        time.Time           `json:"created_at"`
+	Id               int64     `json:"id"`
+	CustomerId       int64     `json:"customer_id"`
+	TargetId         int64     `json:"target_id"`
+	Items            []Item    `json:"items"`
+	Amount           int       `json:"amount"`
+	OrderNumber      string    `json:"order_number"`
+	OrderDescription string    `json:"order_description"`
+	CreatedAt        time.Time `json:"created_at"`
 }
 
 type ApiPaymentActivityResponse struct {
-	Id               int64               `json:"id"`
-	Customer         ApiCustomerResponse `json:"customer"`
-	TargetId         int64               `json:"target_id"`
-	Items            []Item              `json:"items"`
-	Amount           int                 `json:"amount"`
-	OrderNumber      string              `json:"order_number"`
-	OrderDescription string              `json:"order_description"`
-	CreatedAt        time.Time           `json:"created_at"`
+	Id               int64     `json:"id"`
+	CustomerId       int64     `json:"customer_id"`
+	TargetId         int64     `json:"target_id"`
+	Items            []Item    `json:"items"`
+	Amount           int       `json:"amount"`
+	OrderNumber      string    `json:"order_number"`
+	OrderDescription string    `json:"order_description"`
+	CreatedAt        time.Time `json:"created_at"`
 }
 
 // base

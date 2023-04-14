@@ -3,20 +3,20 @@ package model
 import "time"
 
 type Customer struct {
-	Id        int64  `json:"id"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
-	FirstName string `json:"first_name"`
-	SureName  string `json:"sure_name"`
+	Id        int64
+	Username  string
+	Password  string
+	FirstName string
+	SureName  string
 
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type CustomerActivity struct {
-	Id         int64 `json:"id"`
-	CustomerId int64 `json:"customer_id"`
+	Id         int64
+	CustomerId int64
 	// What activity a customer did? Like: login, logout, .etc
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"created_at"`
+	Description string
+	CreatedAt   time.Time
 }
