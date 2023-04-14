@@ -13,12 +13,15 @@ import (
 
 type customerController struct {
 	customerUsecase usecase.CustomerUsecase
+	tokenUsecase    usecase.TokenUsecase
 	secret          *config.Secret
 }
 
-func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase, s *config.Secret) {
-	var mid = middleware.TokenValidate(s.Key)
-	var cc = customerController{c, s}
+func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase,
+	t usecase.TokenUsecase, s *config.Secret) {
+	validator := middleware.NewTokenValidator(t)
+	mid := validator.TokenValidate(s.Key)
+	cc := customerController{c, t, s}
 
 	r.POST("/login", cc.login)
 	r.POST("/logout", mid, cc.logout)

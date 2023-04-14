@@ -15,6 +15,6 @@ func NewPaymentUsecase(p repo.PaymentRepo) PaymentUsecase {
 	}
 }
 
-func (self *payment) Pay(payment *model.Payment, tokenId int64) error {
+func (self *payment) Pay(payment *model.Payment) error {
 	return nil
 }
