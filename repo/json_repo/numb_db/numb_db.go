@@ -14,7 +14,7 @@ type NumbDB struct {
 	path string
 }
 
-func NewNumDB(path string) *NumbDB {
+func NewNumbDB(path string) *NumbDB {
 	ret := new(NumbDB)
 	ret.path = path
 	return ret

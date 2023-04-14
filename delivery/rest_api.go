@@ -66,7 +66,7 @@ func (self *RestApi) Run() error {
 func (self *RestApi) v1() {
 	rg := self.engine.Group("/v1")
 
-	json_db := numb_db.NewNumDB(self.config.DbJSONPath)
+	json_db := numb_db.NewNumbDB(self.config.DbJSONPath)
 
 	customerRepo := json_repo.NewJSONCustomerRepo(json_db)
 	tokenRepo := json_repo.NewJSONTokenRepo(json_db)
