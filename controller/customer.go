@@ -19,9 +19,10 @@ type customerController struct {
 
 func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase,
 	t usecase.TokenUsecase, s *config.Secret) {
-	validator := middleware.NewTokenValidator(t)
-	mid := validator.TokenValidate(s.Key)
-	cc := customerController{c, t, s}
+
+	var validator = middleware.NewTokenValidator(t)
+	var mid = validator.TokenValidate(s.Key)
+	var cc = customerController{c, t, s}
 
 	r.POST("/login", cc.login)
 	r.POST("/logout", mid, cc.logout)
@@ -61,7 +62,33 @@ func (self *customerController) login(ctx *gin.Context) {
 }
 
 func (self *customerController) logout(ctx *gin.Context) {
+	meta, err := GetTokenMetadata(ctx)
+	if err != nil {
+		NewFailedResponse(ctx, err)
+		return
+	}
+
+	err = self.tokenUsecase.RemoveOne(meta.TokenId)
+	if err != nil {
+		NewFailedResponse(ctx, err)
+		return
+	}
+
+	NewSuccessResponse(ctx, http.StatusOK, "logged out", nil)
 }
 
 func (self *customerController) getActivity(ctx *gin.Context) {
+	meta, err := GetTokenMetadata(ctx)
+	if err != nil {
+		NewFailedResponse(ctx, err)
+		return
+	}
+
+	data, err := self.customerUsecase.GetActivities(meta.CustomerId)
+	if err != nil {
+		NewFailedResponse(ctx, err)
+		return
+	}
+
+	NewSuccessResponse(ctx, http.StatusOK, "", data)
 }

@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/repo"
 )
 
@@ -23,4 +24,8 @@ func (self *customer) Login(usename, password string) (int64, error) {
 
 func (self *customer) Logout(id int64, tokenId int64) error {
 	return nil
+}
+
+func (self *customer) GetActivities(id int64) ([]model.CustomerActivity, error) {
+	return []model.CustomerActivity{}, nil
 }

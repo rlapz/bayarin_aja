@@ -9,6 +9,8 @@ type CustomerUsecase interface {
 
 	// this action will invalidate or delete the whitelisted token
 	Logout(id int64, tokenId int64) error
+
+	GetActivities(id int64) ([]model.CustomerActivity, error)
 }
 
 type TokenUsecase interface {

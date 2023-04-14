@@ -6,6 +6,7 @@ import (
 
 type CustomerRepo interface {
 	SelectByUsernme(username string) (*model.Customer, error)
+	SelectActivities(customerId int64) ([]model.CustomerActivity, error)
 }
 
 type TokenRepo interface {
