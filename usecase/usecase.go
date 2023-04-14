@@ -1,15 +1,19 @@
 package usecase
 
-import "github.com/rlapz/bayarin_aja/model"
+import (
+	"github.com/rlapz/bayarin_aja/config"
+	"github.com/rlapz/bayarin_aja/model"
+)
 
 type CustomerUsecase interface {
 	// the password must be hashed
-	// return: customer id
-	Login(usename, password string) (int64, error)
+	// return generated token
+	Login(cust *model.Customer, conf *config.Secret) (string, error)
 
 	// this action will invalidate or delete the whitelisted token
 	Logout(id int64, tokenId int64) error
 
+	GetByUsername(username string) (*model.Customer, error)
 	GetActivities(id int64) ([]model.CustomerActivity, error)
 }
 

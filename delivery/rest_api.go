@@ -71,8 +71,8 @@ func (self *RestApi) v1() {
 	tokenRepo := json_repo.NewJSONTokenRepo(json_db_path)
 	paymentRepo := json_repo.NewJSONPaymentRepo(json_db_path)
 
-	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenRepo)
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
+	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
 	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
 
 	midTokenValidator := middleware.NewTokenValidator(tokenUsecase)

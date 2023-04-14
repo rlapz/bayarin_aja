@@ -7,7 +7,6 @@ import (
 	"github.com/rlapz/bayarin_aja/config"
 	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/usecase"
-	"github.com/rlapz/bayarin_aja/utils"
 )
 
 type customerController struct {
@@ -32,13 +31,12 @@ func (self *customerController) login(ctx *gin.Context) {
 		return
 	}
 
-	id, err := self.customerUsecase.Login(req.Username, req.Password)
-	if err != nil {
-		NewFailedResponse(ctx, err)
-		return
+	cust := model.Customer{
+		Username: req.Username,
+		Password: req.Password,
 	}
 
-	tok, err := utils.TokenGenerate(self.secret.Key, id, self.secret.ExpiresIn)
+	tok, err := self.customerUsecase.Login(&cust, self.secret)
 	if err != nil {
 		NewFailedResponse(ctx, err)
 		return

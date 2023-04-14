@@ -16,7 +16,7 @@ func NewPaymentController(r *gin.RouterGroup, p usecase.PaymentUsecase,
 
 	var pp = paymentController{p, s}
 	r.POST("/payment/pay", mid, pp.pay)
-	r.POST("/payment/activity", mid, pp.getActivities)
+	r.GET("/payment/activity", mid, pp.getActivities)
 }
 
 // handlers
