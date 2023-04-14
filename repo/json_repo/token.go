@@ -15,14 +15,6 @@ func NewJSONTokenRepo(path string) repo.TokenRepo {
 	}
 }
 
-func (self *token) SelectIdByToken(token string) (int64, error) {
-	return 0, nil
-}
-
-func (self *token) SelectTokenById(id int64) (string, error) {
-	return "", nil
-}
-
 func (self *token) InsertOne(token *model.Token) error {
 	return nil
 }

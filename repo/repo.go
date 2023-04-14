@@ -12,8 +12,6 @@ type CustomerRepo interface {
 }
 
 type TokenRepo interface {
-	SelectIdByToken(token string) (int64, error)
-	SelectTokenById(id int64) (string, error)
 	InsertOne(token *model.Token) error
 	DeleteOne(id int64) error
 }

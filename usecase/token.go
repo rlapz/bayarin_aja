@@ -15,14 +15,6 @@ func NewTokenUsecase(t repo.TokenRepo) TokenUsecase {
 	}
 }
 
-func (self *token) GetIdByToken(token string) (int64, error) {
-	return 0, nil
-}
-
-func (self *token) GetTokenById(id int64) (string, error) {
-	return "", nil
-}
-
 func (self *token) Verify(token string, customerId int64) (int64, error) {
 	return 0, nil
 }

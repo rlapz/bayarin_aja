@@ -19,8 +19,6 @@ type CustomerUsecase interface {
 }
 
 type TokenUsecase interface {
-	GetIdByToken(token string) (int64, error)
-	GetTokenById(id int64) (string, error)
 	Verify(token string, customerId int64) (int64, error)
 	AddOne(token *model.Token) error
 	RemoveOne(id int64) error
