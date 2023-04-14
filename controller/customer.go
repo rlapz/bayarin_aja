@@ -24,9 +24,9 @@ func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase,
 	var mid = validator.TokenValidate(s.Key)
 	var cc = customerController{c, t, s}
 
-	r.POST("/login", cc.login)
-	r.POST("/logout", mid, cc.logout)
-	r.GET("/activity/customer", mid, cc.getActivities)
+	r.POST("/customer/login", cc.login)
+	r.POST("/customer/logout", mid, cc.logout)
+	r.GET("/customer/activity", mid, cc.getActivities)
 }
 
 // handlers
