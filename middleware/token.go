@@ -1,9 +1,11 @@
 package middleware
 
 import (
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/utils"
 )
 
@@ -38,7 +40,10 @@ func TokenValidate(secret []byte) gin.HandlerFunc {
 		return
 
 	err0:
-		// TODO: add JSON response
+		ctx.JSON(
+			http.StatusUnauthorized,
+			model.NewApiFailedResponse("invalid token"),
+		)
 		ctx.Abort()
 	}
 }
