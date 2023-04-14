@@ -29,19 +29,19 @@ func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase, s *con
 func (self *customerController) login(ctx *gin.Context) {
 	var req model.ApiCustomerLoginRequest
 	if err := ctx.BindJSON(&req); err != nil {
-		NewFailedResponse(ctx, err, err.Error())
+		NewFailedResponse(ctx, err)
 		return
 	}
 
 	id, err := self.customerUsecase.Login(req.Username, req.Password)
 	if err != nil {
-		NewFailedResponse(ctx, err, err.Error())
+		NewFailedResponse(ctx, err)
 		return
 	}
 
 	tok, err := utils.TokenGenerate(self.secret.Key, id, self.secret.ExpiresIn)
 	if err != nil {
-		NewFailedResponse(ctx, err, err.Error())
+		NewFailedResponse(ctx, err)
 		return
 	}
 

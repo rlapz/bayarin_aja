@@ -25,6 +25,15 @@ func NewSuccessResponse(ctx *gin.Context, code int, message string, data any) {
 	ctx.JSON(code, model.NewApiSuccessResponse(message, data))
 }
 
-func NewFailedResponse(ctx *gin.Context, err error, message string) {
-	ctx.JSON(GetHTTPStatusFrom(err), model.NewApiFailedResponse(message))
+func NewFailedResponse(ctx *gin.Context, err error, message ...string) {
+	var _msg string
+	if len(message) == 0 {
+		_msg = err.Error()
+	} else {
+		for _, v := range message {
+			_msg += v
+		}
+	}
+
+	ctx.JSON(GetHTTPStatusFrom(err), model.NewApiFailedResponse(_msg))
 }
