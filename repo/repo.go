@@ -19,5 +19,6 @@ type TokenRepo interface {
 }
 
 type PaymentRepo interface {
+	SelectAll() ([]model.Payment, error)
 	InsertOne(payment *model.Payment) error
 }

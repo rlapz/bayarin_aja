@@ -67,13 +67,22 @@ func (self *RestApi) v1() {
 	json_db_path := self.config.DbJSONPath
 	customerRepo := json_repo.NewJSONCustomerRepo(json_db_path)
 	tokenRepo := json_repo.NewJSONTokenRepo(json_db_path)
+	paymentRepo := json_repo.NewJSONPaymentRepo(json_db_path)
 
 	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenRepo)
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
+	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
 
 	controller.NewCustomerController(
 		rg,
 		customerUsecase,
+		tokenUsecase,
+		&self.config.Secret,
+	)
+
+	controller.NewPaymentController(
+		rg,
+		paymentUsecase,
 		tokenUsecase,
 		&self.config.Secret,
 	)

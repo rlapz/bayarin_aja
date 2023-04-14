@@ -16,5 +16,9 @@ func NewPaymentUsecase(p repo.PaymentRepo) PaymentUsecase {
 }
 
 func (self *payment) Pay(payment *model.Payment) error {
-	return nil
+	return self.repoPayment.InsertOne(payment)
+}
+
+func (self *payment) GetAll() ([]model.Payment, error) {
+	return self.repoPayment.SelectAll()
 }

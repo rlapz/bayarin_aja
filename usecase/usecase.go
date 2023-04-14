@@ -23,4 +23,5 @@ type TokenUsecase interface {
 
 type PaymentUsecase interface {
 	Pay(payment *model.Payment) error
+	GetAll() ([]model.Payment, error)
 }

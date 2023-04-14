@@ -15,6 +15,10 @@ func NewJSONPaymentRepo(path string) repo.PaymentRepo {
 	}
 }
 
+func (self *payment) SelectAll() ([]model.Payment, error) {
+	return []model.Payment{}, nil
+}
+
 func (self *payment) InsertOne(payment *model.Payment) error {
 	return nil
 }
