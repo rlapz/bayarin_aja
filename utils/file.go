@@ -22,16 +22,12 @@ func FileJSONTest(path []string) {
 				log.Panicf("cannot create: \"%s\" file\n", path)
 			}
 
-			if err = createJSONNew(f); err != nil {
+			_, err = f.WriteString(BASE_SCHEME)
+			if err != nil {
 				log.Panicln("cannot write to:", path)
 			}
 		}
 
 		f.Close()
 	}
-}
-
-func createJSONNew(file *os.File) error {
-	_, err := file.WriteString(BASE_SCHEME)
-	return err
 }
