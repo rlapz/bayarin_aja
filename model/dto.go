@@ -16,7 +16,7 @@ type ApiCustomerActivityRequest struct {
 
 type ApiPaymentCreateRequest struct {
 	CustomerId       int64  `json:"customer_id,required"`
-	TargetId         int64  `json:"target_id,required"`
+	MerchantId       int64  `json:"merchant_id,required"`
 	Items            []Item `json:"items"`
 	Amount           int    `json:"amount,required"`
 	OrderNumber      string `json:"order_number,required"`
@@ -25,7 +25,7 @@ type ApiPaymentCreateRequest struct {
 
 type ApiPaymentActivityRequest struct {
 	CustomerId       int64  `json:"customer_id,required"`
-	TargetId         int64  `json:"target_id,required"`
+	MerchantId       int64  `json:"merchant_id,required"`
 	Items            []Item `json:"items"`
 	Amount           int    `json:"amount,required"`
 	OrderNumber      string `json:"order_number,required"`
@@ -58,7 +58,7 @@ type ApiCustomerActivityResponse struct {
 type ApiPaymentCreateResponse struct {
 	Id               int64     `json:"id"`
 	CustomerId       int64     `json:"customer_id"`
-	TargetId         int64     `json:"target_id"`
+	MerchantId       int64     `json:"merchant_id"`
 	Items            []Item    `json:"items"`
 	Amount           int       `json:"amount"`
 	OrderNumber      string    `json:"order_number"`
@@ -69,7 +69,7 @@ type ApiPaymentCreateResponse struct {
 type ApiPaymentActivityResponse struct {
 	Id               int64     `json:"id"`
 	CustomerId       int64     `json:"customer_id"`
-	TargetId         int64     `json:"target_id"`
+	MerchantId       int64     `json:"merchant_id"`
 	Items            []Item    `json:"items"`
 	Amount           int       `json:"amount"`
 	OrderNumber      string    `json:"order_number"`
