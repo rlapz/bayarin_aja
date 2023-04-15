@@ -65,14 +65,13 @@ func (self *customer) Logout(id int64, tokenId int64) error {
 	return self.addActivity(res.Id, "logout")
 }
 
-func (self *customer) GetByUsername(username string) (*model.Customer, error) {
-	return &model.Customer{}, nil
-}
-
 func (self *customer) GetActivities(id int64) ([]model.CustomerActivity, error) {
-	return []model.CustomerActivity{}, nil
+	return self.repoCustomer.SelectActivities(id)
 }
 
 func (self *customer) addActivity(id int64, desc string) error {
-	return nil
+	return self.repoCustomer.InsertOneActivity(&model.CustomerActivity{
+		CustomerId:  id,
+		Description: desc,
+	})
 }
