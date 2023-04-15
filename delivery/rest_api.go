@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/rlapz/bayarin_aja/middleware"
 	"github.com/rlapz/bayarin_aja/repo/json_repo"
 	"github.com/rlapz/bayarin_aja/usecase"
+	"github.com/rlapz/bayarin_aja/utils"
 )
 
 type RestApi struct {
@@ -60,16 +62,32 @@ func (self *RestApi) Run() error {
 	return nil
 }
 
+func initDB(path string) []string {
+	// create directory if not exists
+	os.MkdirAll(path, os.ModePerm)
+
+	var ret = make([]string, 5)
+	ret[0] = filepath.Join(path, "customer.json")
+	ret[1] = filepath.Join(path, "token.json")
+	ret[2] = filepath.Join(path, "payment.json")
+	ret[3] = filepath.Join(path, "item.go")
+	ret[4] = filepath.Join(path, "merchant.go")
+
+	utils.FileTest(ret)
+
+	return ret
+}
+
 // routes
 // version: 1
 func (self *RestApi) v1() {
 	rg := self.engine.Group("/v1")
 
-	json_db := self.config.DbJSONPath
+	dbs := initDB(self.config.DbJSONPath)
 
-	customerRepo := json_repo.NewJSONCustomerRepo(json_db)
-	tokenRepo := json_repo.NewJSONTokenRepo(json_db)
-	paymentRepo := json_repo.NewJSONPaymentRepo(json_db)
+	customerRepo := json_repo.NewJSONCustomerRepo(dbs[0])
+	tokenRepo := json_repo.NewJSONTokenRepo(dbs[1])
+	paymentRepo := json_repo.NewJSONPaymentRepo(dbs[2])
 
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
 	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
