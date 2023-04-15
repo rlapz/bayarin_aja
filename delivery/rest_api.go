@@ -70,8 +70,8 @@ func initDB(path string) []string {
 	ret[0] = filepath.Join(path, "customer.json")
 	ret[1] = filepath.Join(path, "token.json")
 	ret[2] = filepath.Join(path, "payment.json")
-	ret[3] = filepath.Join(path, "item.go")
-	ret[4] = filepath.Join(path, "merchant.go")
+	ret[3] = filepath.Join(path, "merchant.go")
+	ret[4] = filepath.Join(path, "item.go")
 
 	utils.FileJSONTest(ret)
 
@@ -88,10 +88,17 @@ func (self *RestApi) v1() {
 	customerRepo := json_repo.NewJSONCustomerRepo(dbs[0])
 	tokenRepo := json_repo.NewJSONTokenRepo(dbs[1])
 	paymentRepo := json_repo.NewJSONPaymentRepo(dbs[2])
+	merchantRepo := json_repo.NewMerchantRepo(dbs[3])
+	itemRepo := json_repo.NewItemRepo(dbs[4])
 
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
 	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
 	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
+	merchantUsecase := usecase.NewMerchantUsecase(merchantRepo)
+	itemUsecase := usecase.NewItemUsecase(itemRepo)
+
+	_ = merchantUsecase
+	_ = itemUsecase
 
 	midTokenValidator := middleware.NewTokenValidator(tokenUsecase)
 	midFunc := midTokenValidator.TokenValidate(self.config.Secret.Key)

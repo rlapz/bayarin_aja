@@ -20,3 +20,11 @@ type PaymentRepo interface {
 	SelectAll() ([]model.Payment, error)
 	InsertOne(payment *model.Payment) error
 }
+
+type MerchantRepo interface {
+	SelectById(id int64) (*model.Merchant, error)
+}
+
+type ItemRepo interface {
+	SelectById(id int64) (*model.Item, error)
+}
