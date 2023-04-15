@@ -22,10 +22,6 @@ func (self *token) SelectByToken(token string) (*model.Token, error) {
 	return nil, nil
 }
 
-func (self *token) SelectByCustomerId(customerId int64) (*model.Token, error) {
-	return nil, nil
-}
-
 func (self *token) InsertOne(token *model.Token) error {
 	return nil
 }
