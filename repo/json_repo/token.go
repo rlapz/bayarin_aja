@@ -1,17 +1,20 @@
 package json_repo
 
 import (
+	"sync"
+
 	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/repo"
 )
 
 type token struct {
-	path string
+	path  string
+	mutex sync.Mutex
 }
 
 func NewJSONTokenRepo(path string) repo.TokenRepo {
 	return &token{
-		path,
+		path: path,
 	}
 }
 

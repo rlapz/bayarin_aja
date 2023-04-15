@@ -1,17 +1,20 @@
 package json_repo
 
 import (
+	"sync"
+
 	"github.com/rlapz/bayarin_aja/model"
 	"github.com/rlapz/bayarin_aja/repo"
 )
 
 type customer struct {
-	path string
+	path  string
+	mutex sync.Mutex
 }
 
 func NewJSONCustomerRepo(path string) repo.CustomerRepo {
 	return &customer{
-		path,
+		path: path,
 	}
 }
 
