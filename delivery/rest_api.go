@@ -73,7 +73,7 @@ func initDB(path string) []string {
 	ret[3] = filepath.Join(path, "item.go")
 	ret[4] = filepath.Join(path, "merchant.go")
 
-	utils.FileTest(ret)
+	utils.FileJSONTest(ret)
 
 	return ret
 }
