@@ -91,14 +91,14 @@ func (self *RestApi) v1() {
 	merchantRepo := json_repo.NewMerchantRepo(dbs[3])
 	itemRepo := json_repo.NewItemRepo(dbs[4])
 
-	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
-	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
-	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
 	merchantUsecase := usecase.NewMerchantUsecase(merchantRepo)
 	itemUsecase := usecase.NewItemUsecase(itemRepo)
 
-	_ = merchantUsecase
-	_ = itemUsecase
+	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
+	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
+	paymentUsecase := usecase.NewPaymentUsecase(
+		paymentRepo, itemUsecase, merchantUsecase,
+	)
 
 	midTokenValidator := middleware.NewTokenValidator(tokenUsecase)
 	midFunc := midTokenValidator.TokenValidate(self.config.Secret.Key)
