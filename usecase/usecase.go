@@ -24,8 +24,8 @@ type TokenUsecase interface {
 }
 
 type PaymentUsecase interface {
-	Pay(payment *model.Payment) error
-	GetAll() ([]model.Payment, error)
+	Pay(payment *model.Payment) (*model.Payment, error)
+	GetAllByCustomerId(customerId int64) ([]model.Payment, error)
 }
 
 type MerchantUsecase interface {

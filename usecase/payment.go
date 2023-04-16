@@ -19,10 +19,15 @@ func NewPaymentUsecase(p repo.PaymentRepo, i ItemUsecase, m MerchantUsecase) Pay
 	}
 }
 
-func (self *payment) Pay(payment *model.Payment) error {
-	return self.repoPayment.InsertOne(payment)
+func (self *payment) Pay(payment *model.Payment) (*model.Payment, error) {
+	id, err := self.repoPayment.InsertOne(payment)
+	if err != nil {
+		return nil, err
+	}
+
+	return self.repoPayment.SelectById(id)
 }
 
-func (self *payment) GetAll() ([]model.Payment, error) {
-	return self.repoPayment.SelectAll()
+func (self *payment) GetAllByCustomerId(customerId int64) ([]model.Payment, error) {
+	return self.repoPayment.SelectAllByCustomerId(customerId)
 }

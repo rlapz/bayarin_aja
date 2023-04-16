@@ -4,8 +4,8 @@ import "time"
 
 type Payment struct {
 	Id               int64
-	Customer         Customer
-	TargetId         int64
+	CustomerId       int64
+	MerchantId       int64
 	Items            []Item
 	Amount           int
 	OrderNumber      string

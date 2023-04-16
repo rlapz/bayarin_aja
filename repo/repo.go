@@ -18,8 +18,11 @@ type TokenRepo interface {
 }
 
 type PaymentRepo interface {
-	SelectAll() ([]model.Payment, error)
-	InsertOne(payment *model.Payment) error
+	SelectAllByCustomerId(customerId int64) ([]model.Payment, error)
+	SelectById(id int64) (*model.Payment, error)
+
+	// insert one record and return commited record id
+	InsertOne(payment *model.Payment) (int64, error)
 }
 
 type MerchantRepo interface {

@@ -82,13 +82,13 @@ func (self *customerController) getActivities(ctx *gin.Context) {
 		return
 	}
 
-	data := make([]model.ApiCustomerActivityResponse, len(res))
+	ret := make([]model.ApiCustomerActivityResponse, len(res))
 	for i := 0; i < len(res); i++ {
-		data[i].Id = res[i].Id
-		data[i].CustomerId = res[i].CustomerId
-		data[i].Description = res[i].Description
-		data[i].CreatedAt = res[i].CreatedAt
+		ret[i].Id = res[i].Id
+		ret[i].CustomerId = res[i].CustomerId
+		ret[i].Description = res[i].Description
+		ret[i].CreatedAt = res[i].CreatedAt
 	}
 
-	NewSuccessResponse(ctx, http.StatusOK, "", data)
+	NewSuccessResponse(ctx, http.StatusOK, "", ret)
 }

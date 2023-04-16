@@ -18,10 +18,14 @@ func NewJSONPaymentRepo(path string) repo.PaymentRepo {
 	}
 }
 
-func (self *payment) SelectAll() ([]model.Payment, error) {
+func (self *payment) SelectAllByCustomerId(customerId int64) ([]model.Payment, error) {
 	return []model.Payment{}, nil
 }
 
-func (self *payment) InsertOne(payment *model.Payment) error {
-	return nil
+func (self *payment) SelectById(id int64) (*model.Payment, error) {
+	return &model.Payment{}, nil
+}
+
+func (self *payment) InsertOne(payment *model.Payment) (int64, error) {
+	return -1, nil
 }

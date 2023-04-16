@@ -30,9 +30,9 @@ func (self *token) Verify(token string, customerId int64) (int64, error) {
 }
 
 func (self *token) AddOne(token *model.Token) error {
-	return self.AddOne(token)
+	return self.repoToken.InsertOne(token)
 }
 
 func (self *token) RemoveOne(id int64) error {
-	return self.RemoveOne(id)
+	return self.repoToken.DeleteOne(id)
 }
