@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rlapz/bayarin_aja/config"
 	"github.com/rlapz/bayarin_aja/model"
+	"github.com/rlapz/bayarin_aja/my_errors"
 	"github.com/rlapz/bayarin_aja/usecase"
 )
 
@@ -26,7 +27,7 @@ func NewPaymentController(r *gin.RouterGroup, p usecase.PaymentUsecase,
 func (self *paymentController) pay(ctx *gin.Context) {
 	var req model.ApiPaymentCreateRequest
 	if err := ctx.BindJSON(&req); err != nil {
-		NewFailedResponse(ctx, err)
+		NewFailedResponse(ctx, my_errors.ErrInvalid, "invalid request")
 		return
 	}
 
