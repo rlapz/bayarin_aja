@@ -6,29 +6,29 @@ import (
 
 // request
 type ApiCustomerLoginRequest struct {
-	Username string `json:"username,required"`
-	Password string `json:"password,required"`
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 type ApiCustomerActivityRequest struct {
-	CustomerId int64 `json:"customer_id,required"`
+	CustomerId int64 `json:"customer_id" binding:"required"`
 }
 
 type ApiPaymentCreateRequest struct {
-	CustomerId       int64  `json:"customer_id,required"`
-	MerchantId       int64  `json:"merchant_id,required"`
+	CustomerId       int64  `json:"customer_id" binding:"required"`
+	MerchantId       int64  `json:"merchant_id" binding:"required"`
 	Items            []Item `json:"items"`
-	Amount           int    `json:"amount,required"`
-	OrderNumber      string `json:"order_number,required"`
+	Amount           int    `json:"amount" binding:"required"`
+	OrderNumber      string `json:"order_number" binding:"required"`
 	OrderDescription string `json:"order_description"`
 }
 
 type ApiPaymentActivityRequest struct {
-	CustomerId       int64  `json:"customer_id,required"`
-	MerchantId       int64  `json:"merchant_id,required"`
+	CustomerId       int64  `json:"customer_id" binding:"required"`
+	MerchantId       int64  `json:"merchant_id" binding:"required"`
 	Items            []Item `json:"items"`
-	Amount           int    `json:"amount,required"`
-	OrderNumber      string `json:"order_number,required"`
+	Amount           int    `json:"amount" binding:"required"`
+	OrderNumber      string `json:"order_number" binding:"required"`
 	OrderDescription string `json:"order_description"`
 }
 
