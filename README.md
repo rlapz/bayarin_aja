@@ -2,6 +2,10 @@
 
 ## Disclaimer: This project is aims to fulfill the interview assignment
 
+## About this project (code)
+[TODO]
+
+
 ## How to initialize
 1. The first thing you have todo is that, you should copy the `example.env` file
 to `.env`.
@@ -16,6 +20,11 @@ There are two options:
 
 ## How to stop
 1. You can just hit: `<Ctrl-C>` and wait for 3 seconds
+
+
+## How to deploy
+1. Using `docker`
+[TODO]
 
 
 ## API Documentation
