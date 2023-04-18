@@ -55,7 +55,7 @@ func (self *customer) Login(cust *model.Customer, secret *config.Secret) (utils.
 	}
 
 	err = self.usecaseActivity.AddOne(&model.CustomerActivity{
-		CustomerId:  cust.Id,
+		CustomerId:  res.Id,
 		Description: "login",
 		CreatedAt:   time.Now(),
 	})

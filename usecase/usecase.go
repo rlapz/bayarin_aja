@@ -30,3 +30,8 @@ type PaymentUsecase interface {
 	Pay(payment *model.Payment) (*model.Payment, error)
 	GetAllByCustomerId(customerId int64) ([]model.Payment, error)
 }
+
+type MerchantUsecase interface {
+	GetById(id int64) (*model.Merchant, error)
+	GetByCode(code string) (*model.Merchant, error)
+}

@@ -26,7 +26,7 @@ func (self *token) SelectByToken(token string) (*model.Token, error) {
 			,customer_id
 			,token
 		FROM t_token
-		WHERE customer_id = $1
+		WHERE token = $1
 	`
 
 	ret := new(model.Token)

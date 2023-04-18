@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,13 +13,14 @@ import (
 
 type paymentController struct {
 	paymentUsecase usecase.PaymentUsecase
+	merchUsecase   usecase.MerchantUsecase
 	secret         *config.Secret
 }
 
 func NewPaymentController(r *gin.RouterGroup, p usecase.PaymentUsecase,
-	mid gin.HandlerFunc, s *config.Secret) {
+	m usecase.MerchantUsecase, mid gin.HandlerFunc, s *config.Secret) {
 
-	var pp = paymentController{p, s}
+	var pp = paymentController{p, m, s}
 	r.POST("/payment/pay", mid, pp.pay)
 	r.GET("/payment/activity", mid, pp.getActivities)
 }
@@ -31,9 +33,20 @@ func (self *paymentController) pay(ctx *gin.Context) {
 		return
 	}
 
+	merch, err := self.merchUsecase.GetByCode(req.MerchantCode)
+	if err != nil {
+		if errors.Is(err, my_errors.ErrNoData) {
+			NewFailedResponse(ctx, err, "invalid merchant code")
+			return
+		}
+
+		NewFailedResponse(ctx, err)
+		return
+	}
+
 	reqApi := model.Payment{
 		CustomerId:       req.CustomerId,
-		MerchantId:       req.MerchantId,
+		MerchantId:       merch.Id,
 		Amount:           req.Amount,
 		OrderNumber:      req.OrderNumber,
 		OrderDescription: req.OrderDescription,
@@ -52,7 +65,7 @@ func (self *paymentController) pay(ctx *gin.Context) {
 		&model.ApiPaymentCreateResponse{
 			Id:               ret.Id,
 			CustomerId:       ret.CustomerId,
-			MerchantId:       ret.MerchantId,
+			MerchantCode:     merch.Code,
 			Amount:           ret.Amount,
 			OrderNumber:      ret.OrderNumber,
 			OrderDescription: ret.OrderDescription,
@@ -78,8 +91,15 @@ func (self *paymentController) getActivities(ctx *gin.Context) {
 	for i := 0; i < len(res); i++ {
 		ret[i].Id = res[i].Id
 		ret[i].CustomerId = res[i].CustomerId
-		ret[i].MerchantId = res[i].MerchantId
 		ret[i].Amount = res[i].Amount
+
+		merch, err := self.merchUsecase.GetById(res[i].MerchantId)
+		if err != nil {
+			NewFailedResponse(ctx, err)
+			return
+		}
+
+		ret[i].MerchantCode = merch.Code
 		ret[i].OrderNumber = res[i].OrderNumber
 		ret[i].OrderDescription = res[i].OrderDescription
 		ret[i].CreatedAt = res[i].CreatedAt

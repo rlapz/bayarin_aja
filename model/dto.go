@@ -12,7 +12,7 @@ type ApiCustomerLoginRequest struct {
 
 type ApiPaymentCreateRequest struct {
 	CustomerId       int64  `json:"customer_id" binding:"required"`
-	MerchantId       int64  `json:"merchant_id" binding:"required"`
+	MerchantCode     string `json:"merchant_code" binding:"required"`
 	Amount           int64  `json:"amount" binding:"required"`
 	OrderNumber      string `json:"order_number" binding:"required"`
 	OrderDescription string `json:"order_description"`
@@ -41,7 +41,7 @@ type ApiCustomerActivityResponse struct {
 type ApiPaymentCreateResponse struct {
 	Id               int64     `json:"id"`
 	CustomerId       int64     `json:"customer_id"`
-	MerchantId       int64     `json:"merchant_id"`
+	MerchantCode     string    `json:"merchant_code"`
 	Amount           int64     `json:"amount"`
 	OrderNumber      string    `json:"order_number"`
 	OrderDescription string    `json:"order_description"`
@@ -51,7 +51,7 @@ type ApiPaymentCreateResponse struct {
 type ApiPaymentActivityResponse struct {
 	Id               int64     `json:"id"`
 	CustomerId       int64     `json:"customer_id"`
-	MerchantId       int64     `json:"merchant_id"`
+	MerchantCode     string    `json:"merchant_code"`
 	Amount           int64     `json:"amount"`
 	OrderNumber      string    `json:"order_number"`
 	OrderDescription string    `json:"order_description"`

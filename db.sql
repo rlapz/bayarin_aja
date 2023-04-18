@@ -11,7 +11,7 @@ CREATE TABLE m_customer(
 CREATE TABLE t_token(
 	id		BIGSERIAL PRIMARY KEY,
 	customer_id	BIGINT REFERENCES m_customer(id) NOT NULL,
-	token		VARCHAR(256) NOT NULL
+	token		TEXT NOT NULL
 );
 
 -- table m_merchant

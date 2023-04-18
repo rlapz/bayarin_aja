@@ -90,11 +90,13 @@ func (self *RestApi) v1() {
 	custActivityRepo := psql.NewPsqlCustomerActivityRepo(self.db)
 	paymentRepo := psql.NewPsqlPaymentRepo(self.db)
 	tokenRepo := psql.NewPsqlTokenRepo(self.db)
+	merchRepo := psql.NewMerchantRepo(self.db)
 
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
 	custActivityUsecase := usecase.NewCustomerActivityUsecase(custActivityRepo)
 	custUsecase := usecase.NewCustomerUsecase(custRepo, custActivityUsecase, tokenUsecase)
 	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
+	mercUsecase := usecase.NewMerchantUsecase(merchRepo)
 
 	midTokenValidator := middleware.NewTokenValidator(tokenUsecase)
 	midFunc := midTokenValidator.TokenValidate(self.config.Secret.Key)
@@ -110,6 +112,7 @@ func (self *RestApi) v1() {
 	controller.NewPaymentController(
 		rg,
 		paymentUsecase,
+		mercUsecase,
 		midFunc,
 		&self.config.Secret,
 	)

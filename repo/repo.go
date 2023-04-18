@@ -27,3 +27,8 @@ type PaymentRepo interface {
 	// insert one record and return commited record id
 	InsertOne(payment *model.Payment) (int64, error)
 }
+
+type MerchantRepo interface {
+	SelectById(id int64) (*model.Merchant, error)
+	SelectByCode(code string) (*model.Merchant, error)
+}
