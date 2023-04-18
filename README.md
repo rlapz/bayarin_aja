@@ -2,14 +2,12 @@
 
 ## Disclaimer: This project is aims to fulfill the interview assignment
 
-## About this project (code)
-[TODO]
-
 
 ## How to initialize
-1. The first thing you have todo is that, you should copy the `example.env` file
-to `.env`.
-2. Secondly, edit the `.env` file, change the `SECRET_KEY`, please make sure you don't share this key.
+1. You should copy the `example.env` file to `.env`.
+2. Edit the `.env` file, change the `SECRET_KEY`, please make sure you don't share this key.
+3. Edit other env variable if necessary
+4. Import `db.sql` database scheme. (PostgreSQL)
 
 
 ## How to run
@@ -20,11 +18,6 @@ There are two options:
 
 ## How to stop
 1. You can just hit: `<Ctrl-C>` and wait for 3 seconds
-
-
-## How to deploy
-1. Using `docker`
-[TODO]
 
 
 ## API Documentation
