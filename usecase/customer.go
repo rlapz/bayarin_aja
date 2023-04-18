@@ -1,20 +1,27 @@
 package usecase
 
 import (
+	"errors"
+	"time"
+
 	"github.com/rlapz/bayarin_aja/config"
 	"github.com/rlapz/bayarin_aja/model"
+	"github.com/rlapz/bayarin_aja/my_errors"
 	"github.com/rlapz/bayarin_aja/repo"
 	"github.com/rlapz/bayarin_aja/utils"
 )
 
 type customer struct {
-	repoCustomer repo.CustomerRepo
-	usecaseToken TokenUsecase
+	repoCustomer    repo.CustomerRepo
+	usecaseActivity CustomerActivityUsecase
+	usecaseToken    TokenUsecase
 }
 
-func NewCustomerUsecase(c repo.CustomerRepo, t TokenUsecase) CustomerUsecase {
+func NewCustomerUsecase(c repo.CustomerRepo, ca CustomerActivityUsecase,
+	t TokenUsecase) CustomerUsecase {
 	return &customer{
 		c,
+		ca,
 		t,
 	}
 }
@@ -25,6 +32,10 @@ func (self *customer) Login(cust *model.Customer, secret *config.Secret) (utils.
 		cust.Password,
 	)
 	if err != nil {
+		if errors.Is(err, my_errors.ErrNoData) {
+			return utils.Token{}, my_errors.ErrUnauthorize
+		}
+
 		return utils.Token{}, err
 	}
 
@@ -43,7 +54,11 @@ func (self *customer) Login(cust *model.Customer, secret *config.Secret) (utils.
 		return ret, err
 	}
 
-	err = self.addActivity(res.Id, "login")
+	err = self.usecaseActivity.AddOne(&model.CustomerActivity{
+		CustomerId:  cust.Id,
+		Description: "login",
+		CreatedAt:   time.Now(),
+	})
 	if err != nil {
 		return ret, err
 	}
@@ -62,16 +77,9 @@ func (self *customer) Logout(id int64, tokenId int64) error {
 		return err
 	}
 
-	return self.addActivity(res.Id, "logout")
-}
-
-func (self *customer) GetActivities(id int64) ([]model.CustomerActivity, error) {
-	return self.repoCustomer.SelectActivities(id)
-}
-
-func (self *customer) addActivity(id int64, desc string) error {
-	return self.repoCustomer.InsertOneActivity(&model.CustomerActivity{
-		CustomerId:  id,
-		Description: desc,
+	return self.usecaseActivity.AddOne(&model.CustomerActivity{
+		CustomerId:  res.Id,
+		Description: "logout",
+		CreatedAt:   time.Now(),
 	})
 }

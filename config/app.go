@@ -9,8 +9,7 @@ import (
 )
 
 type Api struct {
-	Host string
-	Port string
+	HostPort string
 }
 
 type Secret struct {
@@ -18,9 +17,18 @@ type Secret struct {
 	ExpiresIn time.Duration
 }
 
+type Db struct {
+	HostPort string
+	Name     string
+	Username string
+	Password string
+	SslMode  string
+}
+
 type App struct {
 	Api        Api
 	Secret     Secret
+	Db         Db
 	DbJSONPath string
 }
 
@@ -38,14 +46,19 @@ func NewAppConfig() *App {
 
 	var ret = App{
 		Api: Api{
-			Host: utils.GetEnvFrom("HTTP_SERVER_HOST"),
-			Port: utils.GetEnvFrom("HTTP_SERVER_PORT"),
+			HostPort: utils.GetEnvFrom("HTTP_SERVER_HOST_PORT"),
 		},
 		Secret: Secret{
 			Key:       []byte(utils.GetEnvFrom("SECRET_KEY")),
 			ExpiresIn: time.Duration(exp),
 		},
-		DbJSONPath: utils.GetEnvFrom("DB_JSON_PATH"),
+		Db: Db{
+			HostPort: utils.GetEnvFrom("DB_HOST_PORT"),
+			Name:     utils.GetEnvFrom("DB_NAME"),
+			Username: utils.GetEnvFrom("DB_USERNAME"),
+			Password: utils.GetEnvFrom("DB_PASSWORD"),
+			SslMode:  utils.GetEnvFrom("DB_SSL_MODE"),
+		},
 	}
 
 	return &ret

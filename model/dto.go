@@ -13,8 +13,7 @@ type ApiCustomerLoginRequest struct {
 type ApiPaymentCreateRequest struct {
 	CustomerId       int64  `json:"customer_id" binding:"required"`
 	MerchantId       int64  `json:"merchant_id" binding:"required"`
-	Items            []Item `json:"items"`
-	Amount           int    `json:"amount" binding:"required"`
+	Amount           int64  `json:"amount" binding:"required"`
 	OrderNumber      string `json:"order_number" binding:"required"`
 	OrderDescription string `json:"order_description"`
 }
@@ -30,9 +29,6 @@ type ApiCustomerResponse struct {
 	Username  string `json:"username"`
 	FirstName string `json:"first_name"`
 	SureName  string `json:"sure_name"`
-
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type ApiCustomerActivityResponse struct {
@@ -46,8 +42,7 @@ type ApiPaymentCreateResponse struct {
 	Id               int64     `json:"id"`
 	CustomerId       int64     `json:"customer_id"`
 	MerchantId       int64     `json:"merchant_id"`
-	Items            []Item    `json:"items"`
-	Amount           int       `json:"amount"`
+	Amount           int64     `json:"amount"`
 	OrderNumber      string    `json:"order_number"`
 	OrderDescription string    `json:"order_description"`
 	CreatedAt        time.Time `json:"created_at"`
@@ -57,8 +52,7 @@ type ApiPaymentActivityResponse struct {
 	Id               int64     `json:"id"`
 	CustomerId       int64     `json:"customer_id"`
 	MerchantId       int64     `json:"merchant_id"`
-	Items            []Item    `json:"items"`
-	Amount           int       `json:"amount"`
+	Amount           int64     `json:"amount"`
 	OrderNumber      string    `json:"order_number"`
 	OrderDescription string    `json:"order_description"`
 	CreatedAt        time.Time `json:"created_at"`

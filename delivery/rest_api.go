@@ -2,12 +2,12 @@ package delivery
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 
@@ -15,13 +15,15 @@ import (
 	"github.com/rlapz/bayarin_aja/config"
 	"github.com/rlapz/bayarin_aja/controller"
 	"github.com/rlapz/bayarin_aja/middleware"
-	"github.com/rlapz/bayarin_aja/repo/json_repo"
+	"github.com/rlapz/bayarin_aja/repo/psql"
 	"github.com/rlapz/bayarin_aja/usecase"
-	"github.com/rlapz/bayarin_aja/utils"
+
+	_ "github.com/lib/pq"
 )
 
 type RestApi struct {
 	http   http.Server
+	db     *sql.DB
 	engine *gin.Engine
 	config *config.App
 }
@@ -32,11 +34,7 @@ func NewRestApiDelivery() RestApi {
 
 	return RestApi{
 		http: http.Server{
-			Addr: fmt.Sprintf(
-				"%s:%s",
-				conf.Api.Host,
-				conf.Api.Port,
-			),
+			Addr:    conf.Api.HostPort,
 			Handler: engine,
 		},
 		engine: engine,
@@ -44,7 +42,28 @@ func NewRestApiDelivery() RestApi {
 	}
 }
 
+func (self *RestApi) initDb() error {
+	var err error
+	dbCfg := self.config.Db
+	dbParams := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=%s",
+		dbCfg.Username, dbCfg.Password, dbCfg.HostPort,
+		dbCfg.Name, dbCfg.SslMode,
+	)
+
+	self.db, err = sql.Open("postgres", dbParams)
+	if err != nil {
+		return err
+	}
+
+	// test db connection
+	return self.db.Ping()
+}
+
 func (self *RestApi) Run() error {
+	if err := self.initDb(); err != nil {
+		return err
+	}
+
 	// register router version 1
 	self.v1()
 
@@ -62,50 +81,28 @@ func (self *RestApi) Run() error {
 	return nil
 }
 
-func initDB(path string) []string {
-	// create directory if not exists
-	os.MkdirAll(path, os.ModePerm)
-
-	var ret = make([]string, 5)
-	ret[0] = filepath.Join(path, "customer.json")
-	ret[1] = filepath.Join(path, "token.json")
-	ret[2] = filepath.Join(path, "payment.json")
-	ret[3] = filepath.Join(path, "merchant.go")
-	ret[4] = filepath.Join(path, "item.go")
-
-	utils.FileJSONTest(ret)
-
-	return ret
-}
-
 // routes
 // version: 1
 func (self *RestApi) v1() {
 	rg := self.engine.Group("/v1")
 
-	dbs := initDB(self.config.DbJSONPath)
-
-	customerRepo := json_repo.NewJSONCustomerRepo(dbs[0])
-	tokenRepo := json_repo.NewJSONTokenRepo(dbs[1])
-	paymentRepo := json_repo.NewJSONPaymentRepo(dbs[2])
-	merchantRepo := json_repo.NewMerchantRepo(dbs[3])
-	itemRepo := json_repo.NewItemRepo(dbs[4])
-
-	merchantUsecase := usecase.NewMerchantUsecase(merchantRepo)
-	itemUsecase := usecase.NewItemUsecase(itemRepo)
+	custRepo := psql.NewPsqlCustomerRepo(self.db)
+	custActivityRepo := psql.NewPsqlCustomerActivityRepo(self.db)
+	paymentRepo := psql.NewPsqlPaymentRepo(self.db)
+	tokenRepo := psql.NewPsqlTokenRepo(self.db)
 
 	tokenUsecase := usecase.NewTokenUsecase(tokenRepo)
-	customerUsecase := usecase.NewCustomerUsecase(customerRepo, tokenUsecase)
-	paymentUsecase := usecase.NewPaymentUsecase(
-		paymentRepo, itemUsecase, merchantUsecase,
-	)
+	custActivityUsecase := usecase.NewCustomerActivityUsecase(custActivityRepo)
+	custUsecase := usecase.NewCustomerUsecase(custRepo, custActivityUsecase, tokenUsecase)
+	paymentUsecase := usecase.NewPaymentUsecase(paymentRepo)
 
 	midTokenValidator := middleware.NewTokenValidator(tokenUsecase)
 	midFunc := midTokenValidator.TokenValidate(self.config.Secret.Key)
 
 	controller.NewCustomerController(
 		rg,
-		customerUsecase,
+		custUsecase,
+		custActivityUsecase,
 		midFunc,
 		&self.config.Secret,
 	)

@@ -6,16 +6,12 @@ import (
 )
 
 type payment struct {
-	repoPayment     repo.PaymentRepo
-	usecaseItem     ItemUsecase
-	usecaseMerchant MerchantUsecase
+	repoPayment repo.PaymentRepo
 }
 
-func NewPaymentUsecase(p repo.PaymentRepo, i ItemUsecase, m MerchantUsecase) PaymentUsecase {
+func NewPaymentUsecase(p repo.PaymentRepo) PaymentUsecase {
 	return &payment{
 		p,
-		i,
-		m,
 	}
 }
 

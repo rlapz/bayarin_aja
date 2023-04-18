@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,14 +12,15 @@ import (
 )
 
 type customerController struct {
-	customerUsecase usecase.CustomerUsecase
-	secret          *config.Secret
+	customerUsecase     usecase.CustomerUsecase
+	custtomerActUsecase usecase.CustomerActivityUsecase
+	secret              *config.Secret
 }
 
 func NewCustomerController(r *gin.RouterGroup, c usecase.CustomerUsecase,
-	mid gin.HandlerFunc, s *config.Secret) {
+	ca usecase.CustomerActivityUsecase, mid gin.HandlerFunc, s *config.Secret) {
 
-	var cc = customerController{c, s}
+	var cc = customerController{c, ca, s}
 	r.POST("/customer/login", cc.login)
 	r.POST("/customer/logout", mid, cc.logout)
 	r.GET("/customer/activity", mid, cc.getActivities)
@@ -39,7 +41,12 @@ func (self *customerController) login(ctx *gin.Context) {
 
 	tok, err := self.customerUsecase.Login(&cust, self.secret)
 	if err != nil {
-		NewFailedResponse(ctx, err)
+		if errors.Is(err, my_errors.ErrUnauthorize) {
+			NewFailedResponse(ctx, err, "invalid username or password")
+		} else {
+			NewFailedResponse(ctx, err)
+		}
+
 		return
 	}
 
@@ -77,7 +84,7 @@ func (self *customerController) getActivities(ctx *gin.Context) {
 		return
 	}
 
-	res, err := self.customerUsecase.GetActivities(meta.CustomerId)
+	res, err := self.custtomerActUsecase.GetActivities(meta.CustomerId)
 	if err != nil {
 		NewFailedResponse(ctx, err)
 		return

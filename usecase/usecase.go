@@ -13,8 +13,11 @@ type CustomerUsecase interface {
 
 	// this action will invalidate or delete the whitelisted token
 	Logout(id int64, tokenId int64) error
+}
 
-	GetActivities(id int64) ([]model.CustomerActivity, error)
+type CustomerActivityUsecase interface {
+	GetActivities(customerId int64) ([]model.CustomerActivity, error)
+	AddOne(act *model.CustomerActivity) error
 }
 
 type TokenUsecase interface {
@@ -26,12 +29,4 @@ type TokenUsecase interface {
 type PaymentUsecase interface {
 	Pay(payment *model.Payment) (*model.Payment, error)
 	GetAllByCustomerId(customerId int64) ([]model.Payment, error)
-}
-
-type MerchantUsecase interface {
-	GetById(id int64) (*model.Merchant, error)
-}
-
-type ItemUsecase interface {
-	GetById(id int64) (*model.Item, error)
 }

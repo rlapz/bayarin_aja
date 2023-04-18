@@ -23,6 +23,10 @@ func GetHTTPStatusFrom(err error) int {
 		return http.StatusNotFound
 	}
 
+	if errors.Is(err, my_errors.ErrUnauthorize) {
+		return http.StatusUnauthorized
+	}
+
 	return http.StatusBadRequest
 }
 

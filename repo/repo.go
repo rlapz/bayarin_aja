@@ -6,9 +6,12 @@ import (
 
 type CustomerRepo interface {
 	SelectById(id int64) (*model.Customer, error)
-	SelectByUsernameAndPassword(username, password string) (*model.Customer, error)
-	SelectActivities(customerId int64) ([]model.CustomerActivity, error)
-	InsertOneActivity(act *model.CustomerActivity) error
+	SelectByUsernameAndPassword(uname, passw string) (*model.Customer, error)
+}
+
+type CustomerActivityRepo interface {
+	SelectAllByCustomerId(customerId int64) ([]model.CustomerActivity, error)
+	InsertOne(act *model.CustomerActivity) error
 }
 
 type TokenRepo interface {
@@ -23,12 +26,4 @@ type PaymentRepo interface {
 
 	// insert one record and return commited record id
 	InsertOne(payment *model.Payment) (int64, error)
-}
-
-type MerchantRepo interface {
-	SelectById(id int64) (*model.Merchant, error)
-}
-
-type ItemRepo interface {
-	SelectById(id int64) (*model.Item, error)
 }

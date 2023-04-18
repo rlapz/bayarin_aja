@@ -34,7 +34,6 @@ func (self *paymentController) pay(ctx *gin.Context) {
 	reqApi := model.Payment{
 		CustomerId:       req.CustomerId,
 		MerchantId:       req.MerchantId,
-		Items:            req.Items,
 		Amount:           req.Amount,
 		OrderNumber:      req.OrderNumber,
 		OrderDescription: req.OrderDescription,
@@ -54,7 +53,6 @@ func (self *paymentController) pay(ctx *gin.Context) {
 			Id:               ret.Id,
 			CustomerId:       ret.CustomerId,
 			MerchantId:       ret.MerchantId,
-			Items:            ret.Items,
 			Amount:           ret.Amount,
 			OrderNumber:      ret.OrderNumber,
 			OrderDescription: ret.OrderDescription,
@@ -81,7 +79,6 @@ func (self *paymentController) getActivities(ctx *gin.Context) {
 		ret[i].Id = res[i].Id
 		ret[i].CustomerId = res[i].CustomerId
 		ret[i].MerchantId = res[i].MerchantId
-		ret[i].Items = res[i].Items
 		ret[i].Amount = res[i].Amount
 		ret[i].OrderNumber = res[i].OrderNumber
 		ret[i].OrderDescription = res[i].OrderDescription
