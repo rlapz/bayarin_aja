@@ -75,12 +75,11 @@ For the `login`, `logout`, and `payment` are automatically "recorded" as `activi
 		 ```
 
 		 Example:
-
 		 ```
-		{
-			  "username": "rezki",
-				"password": "$2a$12$HEQe5GKPA2EMC95qhbPbgeNk25PyDwu8zSJ34SGGkNtkBg0uKNP1a"
-		}
+		 {
+		     "username": "rezki",
+		     "password": "$2a$12$HEQe5GKPA2EMC95qhbPbgeNk25PyDwu8zSJ34SGGkNtkBg0uKNP1a"
+		 }
 		 ```
 
 	   - Responses
@@ -89,14 +88,13 @@ For the `login`, `logout`, and `payment` are automatically "recorded" as `activi
 
 		 Object:
 		 ```
-     {
-         "status": "Success",
-         "message": "login success",
-         "data": {
-             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODE4MzgyNDMsImlkIjoxfQ.qP3OTczoI4isWe1Q3w9GVmpiX30TD9WQMzg0zmBfls4",
-             "expires_in": 1681838243 // <-- Unix epoch
-         }
-     }
+		 {
+		     "status": "Success",
+		     "message": "login success",
+		     "data": {
+		     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODE4MzgyNDMsImlkIjoxfQ.qP3OTczoI4isWe1Q3w9GVmpiX30TD9WQMzg0zmBfls4",
+		     "expires_in": 1681838243 // <-- Unix epoch
+		 }
 		 ```
 
    - Logout
@@ -128,58 +126,29 @@ For the `login`, `logout`, and `payment` are automatically "recorded" as `activi
 		 * `Content-Type`: `application/json`
 
 	   - Request body
-		 ```
-     {
-         "status": "Success",
-         "data": [
-             {
-                 "id": 1,
-                 "customer_id": 1,
-                 "description": "login",
-                 "created_at": "2023-04-18T22:52:51.7917Z"
-             },
-             {
-                 "id": 2,
-                 "customer_id": 1,
-                 "description": "logout",
-                 "created_at": "2023-04-18T22:56:29.239617Z"
-             },
-             {
-                 "id": 3,
-                 "customer_id": 1,
-                 "description": "login",
-                 "created_at": "2023-04-18T23:17:23.899902Z"
-             },
-             {
-                 "id": 4,
-                 "customer_id": 1,
-                 "description": "login",
-                 "created_at": "2023-04-18T23:39:29.001597Z"
-             },
-             {
-                 "id": 5,
-                 "customer_id": 1,
-                 "description": "logout",
-                 "created_at": "2023-04-18T23:39:44.438759Z"
-             },
-             {
-                 "id": 6,
-                 "customer_id": 1,
-                 "description": "login",
-                 "created_at": "2023-04-18T23:39:49.156432Z"
-             }
-         ]
-     }
-		 ```
-
 	   - Responses
 
-		 `200 OK`
-
-		 Object:
+        `200 OK`
+		 
+         Object:
 		 ```
 		 {
-		 }
+		     "status": "Success",
+		     "data": [
+                        {
+                            "id": 1,
+			                "customer_id": 1,
+			                "description": "login",
+			                "created_at": "2023-04-18T22:52:51.7917Z"
+                        },
+                        {
+                            "id": 4,
+                            "customer_id": 1,
+                            "description": "login",
+                            "created_at": "2023-04-18T23:39:29.001597Z"
+                        }
+              ]
+          }
 		 ```
 
 **2. Payment**
@@ -192,12 +161,12 @@ For the `login`, `logout`, and `payment` are automatically "recorded" as `activi
 
 	   - Request body
 		 ```
-     {
-         "customer_id": 1,
-         "merchant_code": "M0000001",
-         "amount": 1234,
-         "order_number": "111"
-     }
+         {
+             "customer_id": 1,
+             "merchant_code": "M0000001",
+             "amount": 1234,
+             "order_number": "111"
+         }
 		 ```
 
 	   - Responses
@@ -206,18 +175,18 @@ For the `login`, `logout`, and `payment` are automatically "recorded" as `activi
 
 		 Object:
 		 ```
-     {
-         "status": "Success",
-         "data": {
-             "id": 2,
-             "customer_id": 1,
-             "merchant_code": "M0000001",
-             "amount": 1234,
-             "order_number": "111",
-             "order_description": "",
-             "created_at": "0001-01-01T00:00:00Z"
+         {
+             "status": "Success",
+             "data": {
+                "id": 2,
+                "customer_id": 1,
+                "merchant_code": "M0000001",
+                "amount": 1234,
+                "order_number": "111",
+                "order_description": "",
+                "created_at": "0001-01-01T00:00:00Z"
+             }
          }
-     }
 		 ```
 
    - Show payment activities (History)
@@ -228,36 +197,33 @@ For the `login`, `logout`, and `payment` are automatically "recorded" as `activi
 		 * `Content-Type`: `application/json`
 
 	   - Request body
-		 ```
-		 ```
-
 	   - Responses
 
 		 `200 OK`
 
 		 Object:
 		 ```
-     {
-         "status": "Success",
-         "data": [
-             {
-                 "id": 1,
-                 "customer_id": 1,
-                 "merchant_code": "M0000001",
-                 "amount": 1234,
-                 "order_number": "111",
-                 "order_description": "",
-                 "created_at": "0001-01-01T00:00:00Z"
-             },
-             {
-                 "id": 2,
-                 "customer_id": 1,
-                 "merchant_code": "M0000001",
-                 "amount": 1234,
-                 "order_number": "111",
-                 "order_description": "",
-                 "created_at": "0001-01-01T00:00:00Z"
-             }
-         ]
-     }
-		 ```
+         {
+            "status": "Success",
+            "data": [
+               {
+                  "id": 1,
+                  "customer_id": 1,
+                  "merchant_code": "M0000001",
+                  "amount": 1234,
+                  "order_number": "111",
+                  "order_description": "",
+                  "created_at": "0001-01-01T00:00:00Z"
+               },
+               {
+                  "id": 2,
+                  "customer_id": 1,
+                  "merchant_code": "M0000001",
+                  "amount": 1234,
+                  "order_number": "111",
+                  "order_description": "",
+                  "created_at": "0001-01-01T00:00:00Z"
+               }
+            ]
+         }
+         ```
